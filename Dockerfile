@@ -22,15 +22,24 @@ RUN echo "daemon off;" >> /etc/nginx/nginx.conf
 RUN apt-get install -y php5-fpm php5-mysql
 
 # php-fpm config
-#RUN sed -i -e "s/;cgi.fix_pathinfo=1/cgi.fix_pathinfo=0/g" /etc/php5/fpm/php.ini
 RUN echo "cgi.fix_pathinfo = 0;" >> /etc/php5/fpm/php.ini
 
 # nginx config (for php processor)
-#RUN rm -v /etc/nginx/sites-available/default.conf
 ADD default.conf /etc/nginx/sites-available/default.conf 
+
+# download and install mysql
+RUN apt-get install -y mysql-server mysql-client
+
+# setup mysql
+RUN mysql_install_db
+
+# starting mysql service
+#RUN /etc/init.d/mysqld start
+#RUN /usr/bin/mysqld_safe
 
 # Expose ports
 EXPOSE 80
+EXPOSE 3306
 
 # Set the default command to execute
 CMD service php5-fpm start && nginx
