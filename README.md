@@ -1,2 +1,4 @@
 ### Dockerfile
-ubuntu base image with nginx, php and mysql
+
+/lemp
++ basic dockerfile with ubuntu base + nginx, php5 and mysql
